@@ -2,16 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 
     <title>Flujo de Trabajo</title>
 
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/night.css">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/reveal.css" rel="stylesheet">
+    <link href="css/theme/night.css" rel="stylesheet">
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="lib/css/monokai.css">
+    <link href="lib/css/monokai.css" rel="stylesheet">
 
     <!-- Printing and PDF exports -->
     <script>
@@ -52,13 +52,13 @@
         </section>
 
         <section data-markdown>
-            <script type="text/template">
+            <textarea data-template>
                 ### Sus principales características son:
                 * Desarrollo lineal y no lineal
                 * Descentralizado
                 * Integridad de los cambios
                 * Ramas gratuitas
-            </script>
+            </textarea>
         </section>
 
 
@@ -70,7 +70,8 @@
         </section>
 
         <section>
-            En el año 2010, <strong>Vincent Driessen</strong> publicó un post sobre una forma estructurada de trabajar con git
+            En el año 2010, <strong>Vincent Driessen</strong> publicó un post sobre una forma estructurada de trabajar
+            con git
             <p class="fragment">Se le denominó <strong>GitFlow</strong></p>
         </section>
 
@@ -93,41 +94,333 @@
                     Es la rama principal, la rama productiva
                 </p>
                 <p>
-                    Básicamente aquí están las liberaciones del código que ya ha sido <strong>probado</strong> y <strong>aprobado</strong>
+                    Básicamente aquí están las liberaciones del código que ya ha sido <strong>probado</strong> y
+                    <strong>aprobado</strong>
                 </p>
             </section>
 
             <section>
                 <h3><strong>Develop</strong></h3>
                 <p>
-                    En esta rama se van uniendo los cambios de los <strong>diferentes requerimientos</strong> que se van solicitando al proyecto hasta llegar al nuevo lanzamiento
+                    En esta rama se van uniendo los cambios de los <strong>diferentes requerimientos</strong> que se van
+                    solicitando al proyecto hasta llegar al nuevo lanzamiento
                 </p>
             </section>
 
             <section>
                 <h3><strong>Features</strong></h3>
                 <p>
-                    Aquí se hace todo el desarrollo, <strong>se genera una rama de feature por cada requerimiento que se va solicitando</strong>, al finalizar el desarrollo se fusiona con la rama develop
+                    Aquí se hace todo el desarrollo, <strong>se genera una rama de feature por cada requerimiento que se
+                    va solicitando</strong>, al finalizar el desarrollo se fusiona con la rama develop
                 </p>
             </section>
 
             <section>
                 <h3><strong>Release</strong></h3>
                 <p>
-                    Se prepara el lanzamiento de la nueva versión de la aplicación y <strong>se hacen pruebas del código</strong> antes de fusionar con la rama master, al igual que feature, es obligatorio crear una nueva rama por cada release que se haga
+                    Se prepara el lanzamiento de la nueva versión de la aplicación y <strong>se hacen pruebas del
+                    código</strong> antes de fusionar con la rama master, al igual que feature, es obligatorio crear una
+                    nueva rama por cada release que se haga
                 </p>
             </section>
 
             <section>
                 <h3><strong>Hotfix</strong></h3>
                 <p>
-                    Se resuelven los bugs que se llegaran a encontrar en producción por una mala gestión de pruebas y se necesiten <strong>resolverlos lo antes posible</strong>, se necesita crear una nueva rama por cada hotfix
+                    Se resuelven los bugs que se llegaran a encontrar en producción por una mala gestión de pruebas y se
+                    necesiten <strong>resolverlos lo antes posible</strong>, se necesita crear una nueva rama por cada
+                    hotfix
                 </p>
             </section>
         </section>
 
         <section>
             ¿Cómo lo aplicamos en <strong>SURI (Y demás sistemas)</strong>?
+        </section>
+
+        <section>
+            <section>
+                <h3><strong>Preparar el repositorio</strong></h3>
+            </section>
+            <section>
+                <h4>Paso 0.1: Migrar a git</h4>
+                <p>
+                    Es el paso más sencillo, necesitamos migrar el proyecto a git, para esto usaremos el
+                    <strong>SURI</strong> de <strong>Producción</strong> el cual se supone que es el estable<br>
+                    Simplemente se necesita ejeuctar el siguiente comando en la raíz del proyecto
+                </p>
+                <pre><code data-noescape data-trim>
+                git init
+            </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 0.2: Ignorar</h4>
+                <p>
+                    Existen infinidad de archivos en nuestro proyecto que no es correcto que tengamos versionados ya que
+                    suponen un <strong>riesgo de seguridad</strong> o simplemente peso muerto para el repositorio<br>
+                    Por lo que es necesario que generemos un archivo al cual le digamos a git que archivos/carpetas debe
+                    de ignorar, para ello existe .gitignore<br>
+                </p>
+                <pre><code data-noescape data-trim>
+                    touch .gitignore
+                    echo "vendor/" >> .gitignore
+                    ...
+                    // Los archivos/carpetas principales que no se versionan en Laravel son:
+                    // vendor
+                    // node_modules
+                    // .env
+                    // public/storage
+                    // storage/*.key
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 0.3: Primer commit de master</h4>
+                <p>
+                    En este momento nuestro código está volando y no está relacionado a ningún commit, por lo que es
+                    importante planchar los datos actuales y darles un nombre
+                </p>
+                <pre><code data-noescape data-trim>
+                    git add .
+                    git commit -m "Lanzamiento 0.1"
+                    git tag -a 0.1
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 0.4: Crear las ramas <strong>master</strong> y <strong>develop</strong></h4>
+                <p>
+                    Por default la rama master es creada automáticamente y nos ubica en ella<br>
+                    A partir de esta crearemos la rama develop la cuál sera la rama principal de los cambios, en pocas
+                    palabras podemos decir que <strong>develop es la rama productiva de Desarrollo</strong>
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout -b develop master
+                </code></pre>
+                <p><small>Se crea la rama develop a partir del ultimo commit de master y nos ubica en ella</small></p>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3><strong>Desarrollo</strong></h3>
+            </section>
+
+            <section>
+                <h4>Paso 1.1: Empezar el desarrollo</h4>
+                <p>
+                    Después de haber recibido el requerimiento, analizarlo y efectuar el plan de desarrollo, empezamos a
+                    modficar el código para ello crearemos una rama que venga de develop para empezar los cambios
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout -b feature-95111_Extensionismo develop
+                </code></pre>
+                <p><small>
+                    Por convención todas las ramas que inicien una nueva modificación deben de iniciar con
+                    <strong>feature-</strong><br>
+                    Aparte se propone agregar el <strong>número de tarea y una palabra con la cuál se relacione con el
+                    titulo</strong> al nombre de la rama
+                </small></p>
+            </section>
+
+            <section>
+                <h4>Paso 1.2: Fusionar con develop</h4>
+                <p>
+                    Al terminar el desarrollo del requerimiento se necesitan fusionar los nuevos cambios con la rama
+                    develop para que salgan a producción en el siguiente release
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout develop
+                    // Nos ubicamos en la rama develop
+
+                    git merge --no-ff feature-95111_Extensionismo
+                    // Empezamos a fusionar los cambios de la rama de feature a la rama develop
+
+                    git branch -d feature-95111_Extensionismo
+                    // Eliminamos la rama ya que ya no es necesaria
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3><strong>Lanzamiento</strong></h3>
+            </section>
+
+            <section>
+                <h4>Nota:</h4>
+                <p>
+                    En todos los procesos se deben de ejecutar pruebas por cada commit, en especial aquellos en los
+                    que las ramas se fusionan pero en esta etapa son todavía más importantes ya que estan a un
+                    <strong>paso de salir a producción</strong>
+                </p>
+            </section>
+
+            <section>
+                <h4>Paso 2.1: Preparar el lanzamiento</h4>
+                <p>
+                    Cuando se llega la tiempo limite o requerimientos necesarios para lograr un nuevo lanzamiento se crea
+                    una rama a partir de develop en la cual se empezaran a ejecutar pruebas más potentes para asegurar el
+                    exito del lanzamiento
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout -b release-938 develop
+                </code></pre>
+                <p><small>
+                    Por convención las ramas de lanzamiento se prefijan con <strong>release-</strong><br>
+                    Adicionalmente se propone que los lanzamientos podrían ser por cada sprint y agregar su número al
+                    nombre de la rama
+                </small></p>
+            </section>
+
+            <section>
+                <h4>Paso 2.2: Pruebas y más pruebas</h4>
+                <p>
+                    Se deben de hacer todo tipo de pruebas para asegurar la calidad del código y de los cambios hechos,
+                    en caso de encontrarse hallazgos es posible crear ramas a partir del release para corregirlos
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout -b release-938/bugfix-feature-95111 release-938
+                </code></pre>
+                <p><small>
+                    No hay una convención acerca de como manejar estos bugfix en la etapa de lanzamiento por lo tanto
+                    se aboga por usar el nombre de la rama de lanzamiento más el prefijo <strong>bugfix-</strong> y el
+                    nombre de la rama del requerimiento que esta dando error
+                </small></p>
+            </section>
+
+            <section>
+                <h4>Paso 2.2.1: Fusionar ramas</h4>
+                <p>
+                    En el caso de arreglar los hallazgos encontrados, es momento de fusionar de nuevo con la rama de
+                    lanzamiento
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout release-938
+                    // Nos ubicamos en la rama de lanzamiento
+
+                    git merge --no-ff release-938/bugfix-feature-95111
+                    // Se fusionan las ramas
+
+                    git branch -d release-938/bugfix-feature-95111
+                    // Se elimina la rama que se uso para arreglar los hallazgos
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 2.3: Lanzamiento!!!</h4>
+                <p>
+                    Al tener la seguridad de que el código no falle en producción es momento listo de fusionar con master
+                    y lanzar la nueva versión de la aplicación
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout master
+                    // Nos ubicamos en master
+
+                    git merge --no-ff release-938
+                    // Fusionamos la rama con master
+
+                    git tag -a 938
+                    // Nombramos el lanzamiento con una etiqueta
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 2.3.1: Fusiona los cambios</h4>
+                <p>
+                    Aunque no se hayan hecho cambios en la rama de lanzamiento es bueno igual fusionar la rama develop
+                    con la del lanzamiento para así asegurar que siempre se tenga el código lo más actualizado posible
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout develop
+                    // Nos ubicamos en develop
+
+                    git merge --no-ff release-938
+                    // Fusionamos la rama con develop
+
+                    git branch -d release-938
+                    // Eliminamos la rama ya que no es necesaria
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3><strong>Arreglos</strong></h3>
+            </section>
+
+            <section>
+                <h4>Paso 3.1: Arregla el error</h4>
+                <p>
+                    Es obvio que no somos perfectos y es posible que algún error se haya escapado por ahí y este
+                    afectando producción y sea necesario arreglarlo lo antes posible, es ahi donde entran las ramas de
+                    arreglo rápido
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout master
+                    // Nos ubicamos en master
+
+                    git checkout -b hotfix-938/feature-95111 master
+                    // Generamos una nueva rama a partir de master
+                </code></pre>
+                <p><small>
+                    Por convención las ramas deben de tener el prefijo <strong>hotfix-</strong> más la version
+                    de master, adicionalmente se sugiere que se agregue el número del requerimiento donde ocurrio el
+                    error<br>
+                    Por cada error que se encuentre hay que generar una rama diferente<br>
+                    Mientras haya menos de estas ramas significa que el código es más
+                    <strong>estable, confiable y mejor calidad tiene</strong>
+                </small></p>
+            </section>
+
+            <section>
+                <h4>Paso 3.2: Listo!</h4>
+                <p>
+                    Una vez controlado el error y probado es momento de fusionar con master y develop
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout master
+                    // Nos ubicamos en master
+
+                    git merge --no-ff hotfix-938
+                    // Fusionamos la rama con master
+
+                    git tag -a 938.1
+                    // Nombramos el nuevo lanzamiento, agregando un número a la versión
+                    // y en caso que ya exista, aumentarlo en uno
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Paso 3.2.1: Mantener actualizado el código</h4>
+                <p>
+                    Una vez ya listo master es momento de agregar los cambios hechos en develop para tener actualizado
+                    el código
+                </p>
+                <pre><code data-noescape data-trim>
+                    git checkout develop
+                    // Nos ubicamos en develop
+
+                    git merge --no-ff hotfix-938
+                    // Fusionamos con develop
+
+                    git branch -d hotfix-938
+                    // Eliminamos la rama
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h3>Finalmente, la siguiente imagen es una representación del flujo que se llevaría</h3>
+        </section>
+
+        <section>
+            <img height="625px" src="https://nvie.com/img/git-model@2x.png">
+        </section>
+
+        <section>
+            <h1>¡Gracias!</h1>rc
         </section>
     </div>
 </div>
