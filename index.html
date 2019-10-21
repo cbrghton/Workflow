@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>reveal.js</title>
+    <title>Flujo de Trabajo</title>
 
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.css">
@@ -31,31 +31,103 @@
         </section>
 
         <section id="fragments">
-            <h3>Todo empieza con Git!</h3>
-            <p class="fragment">...</p>
-            <p class="fragment">¡¿Pero que es Git?!</p>
-            <p class="fragment"><img src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif"></p>
-        </section>
-
-        <section>
-            Git es un software de control de <strong>versiones</strong> diseñado por <strong>Linus Torvalds</strong> durante el proceso del desarrollo del Kernel de <strong>Linux</strong>
-            <br>
-            Es de código abierto bajo la licencia <strong>GNU 2.0</strong>
-
-            <aside class="notes">
-                Durante el desarrollo de Linux, Linus se cansaba de crear carpetas por cada nueva versión que sacaban del Kernel
-            </aside>
-        </section>
-
-        <section>
-            ¿Pero en que se diferencia de los demás?
+            <h3>Todo empieza con git!</h3>
+            <p class="fragment">Pero...</p>
+            <p class="fragment">¡¿Qué es git?!</p>
             <p class="fragment">
-                <img src="https://media.giphy.com/media/jVZJsyEXEMPYBBJHLZ/giphy.gif">
+                <img alt="what?" src="https://media.giphy.com/media/iHe7mA9M9SsyQ/giphy.gif">
             </p>
         </section>
 
         <section>
+            Git es un software de control de <strong>versiones</strong> diseñado por <strong>Linus Torvalds</strong>
+            durante el proceso del desarrollo del Kernel de <strong>Linux</strong>
+            <br>
+            Es de código abierto bajo la licencia <strong>GNU 2.0</strong>
 
+            <aside class="notes">
+                Durante el desarrollo de Linux, Linus se cansaba de crear carpetas por cada nueva versión que sacaban
+                del Kernel
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ### Sus principales características son:
+                * Desarrollo lineal y no lineal
+                * Descentralizado
+                * Integridad de los cambios
+                * Ramas gratuitas
+            </script>
+        </section>
+
+
+        <section>
+            ¿Cómo es que <strong>git</strong> nos puede ayudar en el flujo de trabajo?
+            <p class="fragment">
+                <img alt="question" src="https://media.giphy.com/media/xT0xeuOy2Fcl9vDGiA/giphy.gif"/>
+            </p>
+        </section>
+
+        <section>
+            En el año 2010, <strong>Vincent Driessen</strong> publicó un post sobre una forma estructurada de trabajar con git
+            <p class="fragment">Se le denominó <strong>GitFlow</strong></p>
+        </section>
+
+        <section>
+            <section>
+                <h3>Se compone de <strong>"5 ramas"</strong></h3>
+                <br>
+                <ul>
+                    <li><h5>master</h5></li>
+                    <li><h5>develop</h5></li>
+                    <li><h5>hotfix</h5></li>
+                    <li><h5>release</h5></li>
+                    <li><h5>feature</h5></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3><strong>Master</strong></h3>
+                <p>
+                    Es la rama principal, la rama productiva
+                </p>
+                <p>
+                    Básicamente aquí están las liberaciones del código que ya ha sido <strong>probado</strong> y <strong>aprobado</strong>
+                </p>
+            </section>
+
+            <section>
+                <h3><strong>Develop</strong></h3>
+                <p>
+                    En esta rama se van uniendo los cambios de los <strong>diferentes requerimientos</strong> que se van solicitando al proyecto hasta llegar al nuevo lanzamiento
+                </p>
+            </section>
+
+            <section>
+                <h3><strong>Features</strong></h3>
+                <p>
+                    Aquí se hace todo el desarrollo, <strong>se genera una rama de feature por cada requerimiento que se va solicitando</strong>, al finalizar el desarrollo se fusiona con la rama develop
+                </p>
+            </section>
+
+            <section>
+                <h3><strong>Release</strong></h3>
+                <p>
+                    Se prepara el lanzamiento de la nueva versión de la aplicación y <strong>se hacen pruebas del código</strong> antes de fusionar con la rama master, al igual que feature, es obligatorio crear una nueva rama por cada release que se haga
+                </p>
+            </section>
+
+            <section>
+                <h3><strong>Hotfix</strong></h3>
+                <p>
+                    Se resuelven los bugs que se llegaran a encontrar en producción por una mala gestión de pruebas y se necesiten <strong>resolverlos lo antes posible</strong>, se necesita crear una nueva rama por cada hotfix
+                </p>
+            </section>
+        </section>
+
+        <section>
+            ¿Cómo lo aplicamos en <strong>SURI (Y demás sistemas)</strong>?
         </section>
     </div>
 </div>
